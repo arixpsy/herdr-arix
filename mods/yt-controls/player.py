@@ -113,7 +113,16 @@ def search(q):
     found = subprocess.run(
         ["yt-dlp", "--flat-playlist", "--print",
          "%(id)s\t%(title)s  [%(duration_string)s] %(channel)s", "ytsearch20:" + q],
-        capture_output=True, text=True, encoding="utf-8").stdout
+        capture_output=True, text=True, encoding="utf-8")
+    if not found.stdout.strip():
+        # With empty input fzf would list files in the current folder instead.
+        print("No results for: " + q)
+        err = (found.stderr or "").strip().splitlines()
+        if err:
+            print("\n".join(l[:200] for l in err[-6:]))
+        input("Press Enter to go back to search. ")
+        return ""
+    found = found.stdout
     pick = subprocess.run(
         ["fzf", "--with-nth=2..", "--delimiter=\t", "--prompt=" + q + " > ",
          "--height=100%", "--reverse"],
