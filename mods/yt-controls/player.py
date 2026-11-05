@@ -111,10 +111,12 @@ def play(mode, url):
 def search(q):
     print("searching...")
     found = subprocess.run(
-        ["yt-dlp", "--flat-playlist", "--print",
+        # On Windows yt-dlp writes a pipe in the ANSI code page unless told
+        # otherwise, and titles that aren't valid UTF-8 would lose all results.
+        ["yt-dlp", "--encoding", "utf-8", "--flat-playlist", "--print",
          "%(id)s\t%(title)s  [%(duration_string)s] %(channel)s", "ytsearch20:" + q],
-        capture_output=True, text=True, encoding="utf-8")
-    if not found.stdout.strip():
+        capture_output=True, text=True, encoding="utf-8", errors="replace")
+    if not (found.stdout or "").strip():
         # With empty input fzf would list files in the current folder instead.
         print("No results for: " + q)
         err = (found.stderr or "").strip().splitlines()
