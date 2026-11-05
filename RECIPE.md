@@ -32,7 +32,7 @@ The layout sets no theme, so it follows yours.
 
 ## Built from
 
-- **Layout.** `layouts/arix.json` is a clone of `main` 0.1.12. Its `sidebar-lists` column holds `spaces` and `agents` (weight 1 each, min 90), then `yt-video` (`{"px":152}`), `youtube` (`{"terminal":"<address>"}`, `{"px":220}`, min 160) and `yt-controls` (`{"px":82}`). Everything else is the shipped `workspace-chrome`, `spaces`, `agents`, `tabs`, `pane`, `files`, `changes` and `workspace-status` mods.
+- **Layout.** `layouts/arix.json` is a clone of `main` 0.1.12. Its `sidebar-lists` column holds `spaces` and `agents` (weight 1 each, min 90), then `yt-video` (`{"px":152}`), `youtube` (`{"terminal":"<address>"}`, `{"px":220}`, min 160) and `yt-controls` (`{"px":82}`). Everything else is the shipped `workspace-chrome`, `spaces`, `agents`, `tabs`, `pane` and `workspace-status` mods. The right-hand files/changes panel is removed, so the terminals take the full width.
 - **`mods/yt-video`** is a mod with `"place": "none"`. It draws `image("mods/yt-video/frame.jpg")` while `shared("yt.playing")` is true, and the hint otherwise.
 - **`mods/yt-controls`** is a mod with `"place": "none"`. It runs `python3 -B mods/yt-controls/mpvctl.py <cmd>` through `exec` (`python` on Windows, chosen with `window().platform`). It sets `setShared("yt.playing", ...)` from the reply.
 - **`mpvctl.py`** sends JSON commands to mpv's IPC server, the commands being `state`, `toggle`, `seek <sec>`, `volume <0-100>`, `mute` and `stop`. The server is `~/.cache/ytplayer/mpv.sock` on macOS and Linux, and the named pipe `\\.\pipe\ytplayer-mpv` on Windows.
@@ -49,9 +49,9 @@ The layout sets no theme, so it follows yours.
 - **Don't use mpv's Kitty output in a Herdr terminal.** Herdr never frees Kitty images, so memory grows about 45 MB a second.
 - **Run Python with `-B`.** Every file change under a mod's folder reloads that mod, and that includes a new `__pycache__` folder.
 - **A mod's timers don't fire between reloads.** `yt-video` redraws on every frame because `frame.jpg` changes, so it reads `shared("yt.playing")` instead of polling.
-- **On Windows, `python3` opens the Microsoft Store.** Use `python`. Windows also refuses the rename while Herdr reads `frame.jpg`, and the player skips that frame. Windows is untested.
+- **On Windows, `python3` opens the Microsoft Store.** Use `python`. Windows also refuses the rename while Herdr reads `frame.jpg`, and the player skips that frame. Tested on Windows 11.
 - **YouTube answers 403 on the direct streams of some videos** and drops the HLS streams of others, which is why the player tries both. Keep yt-dlp updated (`yt-dlp -U`, `brew upgrade yt-dlp` or `winget upgrade yt-dlp.yt-dlp`).
-- **Install first.** macOS: `brew install mpv yt-dlp fzf`. Windows: `winget install Python.Python.3.12 yt-dlp.yt-dlp junegunn.fzf`, plus mpv from mpv.io with `mpv` on PATH. The prompt lists any program that is missing.
+- **Install first.** macOS: `brew install mpv yt-dlp fzf`. Windows: `winget install Python.Python.3.12 yt-dlp.yt-dlp junegunn.fzf shinchiro.mpv`, then add `C:\Program Files\MPV Player` to PATH (see the README's Windows setup). The prompt lists any program that is missing.
 
 ## Done when
 

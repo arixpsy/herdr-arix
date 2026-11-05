@@ -149,27 +149,6 @@
                   "lone": true
                 }
               }
-            },
-            {
-              "id": "panel-body",
-              "type": "stack",
-              "children": [
-                {
-                  "id": "files",
-                  "type": "block",
-                  "content": {
-                    "mod": "files"
-                  }
-                },
-                {
-                  "id": "changes",
-                  "type": "block",
-                  "content": {
-                    "mod": "changes"
-                  }
-                }
-              ],
-              "active": "files"
             }
           ],
           "padding": 8,
